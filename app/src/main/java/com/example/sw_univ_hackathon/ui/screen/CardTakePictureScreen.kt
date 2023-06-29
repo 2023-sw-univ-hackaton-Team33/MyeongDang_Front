@@ -1,5 +1,3 @@
-
-
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
@@ -24,6 +22,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -50,7 +49,7 @@ fun CardTakePictureScreen(navHostController: NavHostController) {
     val file = context.createImageFile()
     val uri = FileProvider.getUriForFile(
         Objects.requireNonNull(context),
-        "com.example.sw_univ_hackathon"+ ".provider", file
+        "com.example.sw_univ_hackathon" + ".provider", file
     )
 
     var capturedImageUri by remember {
@@ -129,9 +128,10 @@ fun CardTakePictureScreen(navHostController: NavHostController) {
             }
             Image(
                 modifier = Modifier
-                    .padding(20.dp, 10.dp)
-                    .width(307.dp)
-                    .height(172.dp),
+                    .fillMaxWidth()
+                    .height(240.dp)
+                    .padding(20.dp, 10.dp),
+                contentScale = ContentScale.Crop,
                 painter = rememberImagePainter(capturedImageUri),
                 contentDescription = null
             )
@@ -143,7 +143,9 @@ fun CardTakePictureScreen(navHostController: NavHostController) {
                     .wrapContentHeight()
                     .fillMaxWidth()
                     .bounceClick {
-                        navHostController.navigate(NAV_ROUTE.CARDADD.routeName)
+                        if (capturedImageUri.path?.isNotEmpty() == true) {
+                            navHostController.navigate(NAV_ROUTE.CARDADD.routeName)
+                        }
                     }
                     .clip(RoundedCornerShape(30.dp))
                     .background(color = MDPoint)
@@ -162,16 +164,20 @@ fun CardTakePictureScreen(navHostController: NavHostController) {
             Spacer(modifier = Modifier.height(27.dp))
         }
 
-    }
-    else{
+    } else {
         val permissionCheckResult =
             ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
+
         if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
-            cameraLauncher.launch(uri)
+
+            SideEffect {
+                cameraLauncher.launch(uri)
+            }
         } else {
             // Request a permission
             permissionLauncher.launch(Manifest.permission.CAMERA)
         }
+
     }
 
 

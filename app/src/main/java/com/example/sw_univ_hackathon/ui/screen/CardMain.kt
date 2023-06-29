@@ -153,94 +153,71 @@ fun CardMainScreen(navController: NavHostController) {
 //            })
         },
         uiScreen = {
-
-            if (capturedImageUri.path?.isNotEmpty() == true) {
-
-                //이미지 찍은거면 담화면 넘어가기
-                navController.navigate(route = NAV_ROUTE.CARDADD.routeName)
-                Image(
-                    modifier = Modifier
-                        .padding(16.dp, 8.dp),
-                    painter = rememberImagePainter(capturedImageUri),
-                    contentDescription = null
-                )
-            } else {
-                BackHandler(enabled = bottomSheetState.isVisible) {
-                    scope.launch {
-                        bottomSheetState.hide()
-                    }
+            BackHandler(enabled = bottomSheetState.isVisible) {
+                scope.launch {
+                    bottomSheetState.hide()
                 }
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.White)
-                        .addFocusCleaner(focusManager)
-                        .padding(horizontal = 20.dp)
-                        .padding(bottom = 20.dp)
+            }
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.White)
+                    .addFocusCleaner(focusManager)
+                    .padding(horizontal = 20.dp)
+                    .padding(bottom = 20.dp)
+            ) {
+
+                Column(
+                    modifier = Modifier.fillMaxSize()
                 ) {
-
-                    Column(
-                        modifier = Modifier.fillMaxSize()
+                    //상단 레이아웃
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                            .padding(top = 20.dp, bottom = 18.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        //상단 레이아웃
-                        Row(
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_logo),
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight()
-                                .padding(top = 20.dp, bottom = 18.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_logo),
-                                modifier = Modifier
-                                    .width(30.dp)
-                                    .height(30.dp)
-                                    .padding(end = 7.dp),
-                                contentDescription = null,
-                            )
-                            Text(
-                                text = "명당",
-                                color = MDBlack,
-                                fontSize = 24.sp,
-                                fontWeight = FontWeight(500)
-                            )
-
-                            Spacer(modifier = Modifier.weight(1f))
-
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_plus),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .size(36.dp)
-                                    .bounceClick {
-//                                    추가 버튼 눌렀을 때
-//                                    navController.navigate(route = NAV_ROUTE.CARDADD.routeName)
-                                        val permissionCheckResult =
-                                            ContextCompat.checkSelfPermission(
-                                                context,
-                                                Manifest.permission.CAMERA
-                                            )
-                                        if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
-                                            cameraLauncher.launch(uri)
-                                        } else {
-                                            // Request a permission
-                                            permissionLauncher.launch(Manifest.permission.CAMERA)
-                                        }
-                                    }
-
-
-                            )
-                        }
-
-                        SearchTextField(
-                            searchText = searchText,
-                            isTextFieldSearchFocused = isTextFieldSearchFocused,
-                            focusManager = focusManager,
-                            db = db,
-                            navController = navController
+                                .width(30.dp)
+                                .height(30.dp)
+                                .padding(end = 7.dp),
+                            contentDescription = null,
+                        )
+                        Text(
+                            text = "명당",
+                            color = MDBlack,
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight(500)
                         )
 
                         Spacer(modifier = Modifier.weight(1f))
+
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_plus),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(36.dp)
+                                .bounceClick {
+//                                    추가 버튼 눌렀을 때
+                                    navController.navigate(route = NAV_ROUTE.CARDCAMERA.routeName)
+                                }
+
+
+                        )
+                    }
+
+                    SearchTextField(
+                        searchText = searchText,
+                        isTextFieldSearchFocused = isTextFieldSearchFocused,
+                        focusManager = focusManager,
+                        db = db,
+                        navController = navController
+                    )
+
+                    Spacer(modifier = Modifier.weight(1f))
 
 //                    LazyColumn(
 //                        modifier = Modifier.fillMaxSize(),
@@ -253,28 +230,28 @@ fun CardMainScreen(navController: NavHostController) {
 //                    }
 //                    }
 
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_folder),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(70.dp)
-                                .bounceClick {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_folder),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(70.dp)
+                            .bounceClick {
 //                                    추가 버튼 눌렀을 때
 //                                    navController.navigate(route = NAV_ROUTE.DISCOVERSEARCHING.routeName)
-                                    focusManager.clearFocus()
-                                    showModalSheet.value = !showModalSheet.value
-                                    scope.launch {
-                                        bottomSheetState.show()
+                                focusManager.clearFocus()
+                                showModalSheet.value = !showModalSheet.value
+                                scope.launch {
+                                    bottomSheetState.show()
 
-                                    }
                                 }
-                                .align(alignment = CenterHorizontally)
+                            }
+                            .align(alignment = CenterHorizontally)
 
-                        )
-                    }
+                    )
                 }
-
             }
+
+
         }
     )
 }

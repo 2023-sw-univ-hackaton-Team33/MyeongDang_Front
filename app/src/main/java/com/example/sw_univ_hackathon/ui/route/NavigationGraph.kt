@@ -41,7 +41,7 @@ fun NavigationGraph(
 //            SearchingScreen(navController)
         }
         composable(
-            NAV_ROUTE.CARDCAMERA.routeName + "/{searchText}",
+            NAV_ROUTE.CARDCAMERA.routeName,
         ) { backStackEntry ->
             CardTakePictureScreen(navController)
         }
