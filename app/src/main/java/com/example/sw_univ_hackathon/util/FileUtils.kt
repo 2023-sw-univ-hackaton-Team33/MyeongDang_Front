@@ -1,4 +1,4 @@
-package com.plzgpt.lenzhub.util
+package com.example.sw_univ_hackathon.util
 
 import android.content.Context
 import android.graphics.Bitmap

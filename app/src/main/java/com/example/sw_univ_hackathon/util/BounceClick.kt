@@ -1,4 +1,4 @@
-package com.plzgpt.lenzhub.util
+package com.example.sw_univ_hackathon.util
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween

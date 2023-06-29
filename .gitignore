@@ -8,6 +8,7 @@ build/
 ApplicationClass.kt
 # Local configuration file (sdk path, etc)
 local.properties
+CardAddScreen.kt
 
 # Log/OS Files
 *.log
