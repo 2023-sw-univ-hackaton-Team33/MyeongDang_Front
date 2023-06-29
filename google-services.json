@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "462099757387",
+    "project_id": "myeongdang-d3202",
+    "storage_bucket": "myeongdang-d3202.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:462099757387:android:7c51f17178d62b2058d0ce",
+        "android_client_info": {
+          "package_name": "com.example.sw_univ_hackathon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "462099757387-8241jtk9s47bi2pl3ec5n9ju7d4mcacd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7IM8AuI3hSOIwNE0e7G3KESpfAvaJXkg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "462099757387-8241jtk9s47bi2pl3ec5n9ju7d4mcacd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
