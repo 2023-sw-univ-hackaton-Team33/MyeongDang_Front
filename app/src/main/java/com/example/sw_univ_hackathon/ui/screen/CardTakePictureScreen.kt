@@ -30,8 +30,8 @@ import androidx.core.content.FileProvider
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import com.example.sw_univ_hackathon.R
-import com.example.sw_univ_hackathon.api.ImageResult
 import com.example.sw_univ_hackathon.api.RetrofitBuilder
+import com.example.sw_univ_hackathon.api.dto.ImageResultDto
 import com.example.sw_univ_hackathon.ui.route.NAV_ROUTE
 import com.example.sw_univ_hackathon.ui.screen.ClovaAPICall
 import com.example.sw_univ_hackathon.ui.theme.MDPoint
@@ -39,7 +39,6 @@ import com.example.sw_univ_hackathon.util.UriUtil.toFile
 import com.example.sw_univ_hackathon.util.bounceClick
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -177,10 +176,10 @@ fun CardTakePictureScreen(navHostController: NavHostController) {
 
                             RetrofitBuilder.imageAPI
                                 .imageUpload(file)
-                                .enqueue(object : Callback<ImageResult> {
+                                .enqueue(object : Callback<ImageResultDto> {
                                     override fun onResponse(
-                                        call: retrofit2.Call<ImageResult>,
-                                        response: retrofit2.Response<ImageResult>,
+                                        call: retrofit2.Call<ImageResultDto>,
+                                        response: retrofit2.Response<ImageResultDto>,
                                     ) {
                                         if (response.isSuccessful) {
                                             val res = response.body()
@@ -203,7 +202,7 @@ fun CardTakePictureScreen(navHostController: NavHostController) {
                                     }
 
                                     override fun onFailure(
-                                        call: retrofit2.Call<ImageResult>,
+                                        call: retrofit2.Call<ImageResultDto>,
                                         t: Throwable
                                     ) {
                                         Log.d("image-result filename222", contextFile.name)

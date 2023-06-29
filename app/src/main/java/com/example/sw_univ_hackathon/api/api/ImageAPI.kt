@@ -1,9 +1,8 @@
-package com.example.sw_univ_hackathon.api
+package com.example.sw_univ_hackathon.api.api
 
+import com.example.sw_univ_hackathon.api.dto.ImageResultDto
 import okhttp3.MultipartBody
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
@@ -14,10 +13,6 @@ interface ImageAPI {
     @POST("/posts/images")
     fun imageUpload(
         @Part file: MultipartBody.Part?,
-    ): Call<ImageResult>
+    ): Call<ImageResultDto>
 
 }
-
-data class ImageResult(
-    val url: String
-)
