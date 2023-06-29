@@ -4,17 +4,23 @@ import androidx.room.*
 
 @Entity(tableName = "md_card_database")
 data class BusinessCard(
+
+
     @ColumnInfo(name = "name")
     val name: String,
 
-    @ColumnInfo(name = "email")
-    val email: String,
+    @ColumnInfo(name = "company")
+    val company: String,
 
     @ColumnInfo(name = "phoneNumber")
     val phoneNumber: String,
 
-    @ColumnInfo(name = "company")
-    val company: String,
+    @ColumnInfo(name = "email")
+    val email: String,
+
+    @ColumnInfo(name = "image")
+    val image: String,
+
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0

@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.sw_univ_hackathon.ui.screen.CardAddScreen
 import com.example.sw_univ_hackathon.ui.screen.CardCameraScreen
+import com.example.sw_univ_hackathon.ui.screen.CardDetailScreen
 import com.example.sw_univ_hackathon.ui.screen.CardMainScreen
 
 
@@ -18,7 +19,8 @@ enum class NAV_ROUTE(val routeName: String, val description: String) { //upload 
     CARDFOLDER("CARD_FOLDER", "명함 폴더 창"),
     CARDCAMERA("CARD_CAMERA", "명함 카메라 창"),
     CARDADD("CARD_ADD", "명함 제작 정보 창"),
-    DISCOVERSEARCHUSERPROFILE("DISCOVER_SEARCH_USER_PROFILE", "탐색 유저 프로필")
+    CARDDETAIL("CARD_DETAIL", "명함 상세 정보 창")
+
 }
 
 
@@ -50,6 +52,12 @@ fun NavigationGraph(
         ) {
 //            CardCameraScreen(modifier = Modifier ,navController)
             CardAddScreen(navController)
+        }
+        composable(
+            NAV_ROUTE.CARDDETAIL.routeName
+        ) {
+//            CardCameraScreen(modifier = Modifier ,navController)
+            CardDetailScreen(navController)
         }
     }
 }

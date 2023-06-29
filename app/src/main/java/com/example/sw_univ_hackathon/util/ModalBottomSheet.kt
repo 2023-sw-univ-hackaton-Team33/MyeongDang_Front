@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.sw_univ_hackathon.R
+import com.example.sw_univ_hackathon.ui.theme.MDGray
 import com.example.sw_univ_hackathon.ui.theme.MDPoint
 import kotlinx.coroutines.launch
 
@@ -37,21 +38,8 @@ fun ModalBottomSheet(
         sheetContent = {
             Box(
                 modifier = Modifier
-                    .padding(start = 20.dp, end = 20.dp)
             ) {
                 Column() {
-                    Box(
-                        modifier = Modifier
-                            .offset(y = 35.dp)
-                            .align(Alignment.CenterHorizontally)
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_folder),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(70.dp)
-                        )
-                    }
 
                     Card(
                         shape = RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp),
@@ -63,44 +51,36 @@ fun ModalBottomSheet(
                             )
                     ) {
 
-                        Box() {
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_trash),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .padding(top = 20.dp, start = 20.dp)
-                                    .bounceClick {
-
-                                    }
+                        Column(
+                            modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 20.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            // 회색 홀드
+                            Box(modifier = Modifier
+                                .width(70.dp)
+                                .height(3.dp)
+                                .background(MDGray, RoundedCornerShape(30.dp))
+                                .alpha(0.2f)
                             )
-
-//                            Spacer(modifier = Modifier.weight(1f))
-
-                            Box(
+                            Row(
                                 modifier = Modifier
-                                    .offset(y = (-35).dp)
                                     .fillMaxWidth()
                             ) {
+
+                                Spacer(modifier = Modifier.weight(1f))
                                 Image(
-                                    painter = painterResource(id = R.drawable.ic_folder),
+                                    painter = painterResource(id = R.drawable.ic_gray_plus),
                                     contentDescription = null,
                                     modifier = Modifier
-                                        .size(70.dp)
-                                        .align(Alignment.Center)
+                                    .padding(end = 20.dp)
+                                        .bounceClick {
+
+                                        },
+                                    alignment = Alignment.TopEnd
                                 )
                             }
-
-
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_gray_plus),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .align(Alignment.TopEnd)
-                                    .padding(top = 20.dp, end = 20.dp)
-                                    .bounceClick {
-
-                                    }
-                            )
                         }
 
                         Column(

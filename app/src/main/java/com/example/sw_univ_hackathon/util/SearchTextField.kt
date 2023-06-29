@@ -35,7 +35,6 @@ import com.example.sw_univ_hackathon.ui.theme.MDBlack
 import com.example.sw_univ_hackathon.ui.theme.MDGray
 import com.example.sw_univ_hackathon.ui.theme.MDPoint
 import com.example.sw_univ_hackathon.ui.theme.MDPointAlpha
-import com.plzgpt.lenzhub.util.bounceClick
 
 
 //탐색에 검색창

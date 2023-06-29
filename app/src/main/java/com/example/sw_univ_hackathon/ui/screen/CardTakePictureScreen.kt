@@ -1,25 +1,22 @@
 import android.Manifest
+import android.annotation.SuppressLint
+import android.content.ContentResolver
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Bundle
+import android.provider.OpenableColumns
+import android.util.Log
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -31,12 +28,24 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.navigation.NavHostController
-import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.sw_univ_hackathon.R
+import com.example.sw_univ_hackathon.api.ImageResult
+import com.example.sw_univ_hackathon.api.RetrofitBuilder
 import com.example.sw_univ_hackathon.ui.route.NAV_ROUTE
+import com.example.sw_univ_hackathon.ui.screen.ClovaAPICall
 import com.example.sw_univ_hackathon.ui.theme.MDPoint
-import com.plzgpt.lenzhub.util.bounceClick
+import com.example.sw_univ_hackathon.util.UriUtil.toFile
+import com.example.sw_univ_hackathon.util.bounceClick
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okio.BufferedSink
+import okio.source
+import retrofit2.Callback
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -46,10 +55,10 @@ import java.util.*
 fun CardTakePictureScreen(navHostController: NavHostController) {
 
     val context = LocalContext.current
-    val file = context.createImageFile()
+    val contextFile = context.createImageFile()
     val uri = FileProvider.getUriForFile(
         Objects.requireNonNull(context),
-        "com.example.sw_univ_hackathon" + ".provider", file
+        "com.example.sw_univ_hackathon" + ".provider", contextFile
     )
 
     var capturedImageUri by remember {
@@ -138,12 +147,72 @@ fun CardTakePictureScreen(navHostController: NavHostController) {
 
             Spacer(modifier = Modifier.weight(1f))
 
+
             Box(
                 modifier = Modifier
                     .wrapContentHeight()
                     .fillMaxWidth()
                     .bounceClick {
                         if (capturedImageUri.path?.isNotEmpty() == true) {
+                            Log.d("image-result filename", contextFile.name)
+
+//                            val filePart = capturedImageUri.asMultipart("file", context.contentResolver)
+
+                            val file2 = toFile(context, capturedImageUri)
+
+                            val file = MultipartBody.Part.createFormData(
+                                name = "file",
+                                filename = file2.name,
+                                body = file2.asRequestBody("image/*".toMediaType())
+                            )
+
+//                            val fileBody: RequestBody = file2
+//                                .asRequestBody("image/*".toMediaTypeOrNull())
+//
+//                            val filePart = MultipartBody.Part.createFormData(
+//                                "file",
+//                                file2.name,
+//                                fileBody
+//                            )
+
+                            RetrofitBuilder.imageAPI
+                                .imageUpload(file)
+                                .enqueue(object : Callback<ImageResult> {
+                                    override fun onResponse(
+                                        call: retrofit2.Call<ImageResult>,
+                                        response: retrofit2.Response<ImageResult>,
+                                    ) {
+                                        if (response.isSuccessful) {
+                                            val res = response.body()
+                                            if (res != null) {
+
+                                                Log.d("image-result filename111", contextFile.name)
+                                                ClovaAPICall(
+                                                    res.url,
+                                                    contextFile,
+                                                    context,
+                                                    capturedImageUri
+                                                )
+
+                                                Log.e("apires", res.toString())
+                                            } else {
+                                                Log.e("apires", response.toString())
+                                            }
+                                        } else {
+                                        }
+                                    }
+
+                                    override fun onFailure(
+                                        call: retrofit2.Call<ImageResult>,
+                                        t: Throwable
+                                    ) {
+                                        Log.d("image-result filename222", contextFile.name)
+
+                                    }
+
+
+                                })
+
                             navHostController.navigate(NAV_ROUTE.CARDADD.routeName)
                         }
                     }
@@ -181,6 +250,29 @@ fun CardTakePictureScreen(navHostController: NavHostController) {
     }
 
 
+}
+
+@SuppressLint("Range")
+fun Uri.asMultipart(name: String, contentResolver: ContentResolver): MultipartBody.Part? {
+    return contentResolver.query(this, null, null, null, null)?.let {
+        if (it.moveToNext()) {
+            val displayName = it.getString(it.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+            val requestBody = object : RequestBody() {
+                override fun contentType(): MediaType? {
+                    return contentResolver.getType(this@asMultipart)?.toMediaType()
+                }
+
+                override fun writeTo(sink: BufferedSink) {
+                    sink.writeAll(contentResolver.openInputStream(this@asMultipart)?.source()!!)
+                }
+            }
+            it.close()
+            MultipartBody.Part.createFormData(name, displayName, requestBody)
+        } else {
+            it.close()
+            null
+        }
+    }
 }
 
 fun Context.createImageFile(): File {

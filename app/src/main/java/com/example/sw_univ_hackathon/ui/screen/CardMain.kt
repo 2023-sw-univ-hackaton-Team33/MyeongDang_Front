@@ -12,6 +12,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +22,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Text
@@ -33,9 +36,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
@@ -51,13 +58,15 @@ import com.example.sw_univ_hackathon.R
 import com.example.sw_univ_hackathon.db.BusinessCardDatabase
 import com.example.sw_univ_hackathon.ui.route.NAV_ROUTE
 import com.example.sw_univ_hackathon.ui.theme.MDBlack
+import com.example.sw_univ_hackathon.ui.theme.MDPoint
+import com.example.sw_univ_hackathon.ui.theme.MDPointAlpha
+import com.example.sw_univ_hackathon.util.ModalBottomSheet
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
-import com.plzgpt.lenzhub.util.ModalBottomSheet
 import com.example.sw_univ_hackathon.util.SearchTextField
+import com.example.sw_univ_hackathon.util.addFocusCleaner
+import com.example.sw_univ_hackathon.util.bounceClick
 import com.gun0912.tedpermission.provider.TedPermissionProvider.context
-import com.plzgpt.lenzhub.util.addFocusCleaner
-import com.plzgpt.lenzhub.util.bounceClick
 import kotlinx.coroutines.launch
 import java.io.File
 import java.text.SimpleDateFormat
@@ -170,6 +179,7 @@ fun CardMainScreen(navController: NavHostController) {
                 Column(
                     modifier = Modifier.fillMaxSize()
                 ) {
+
                     //상단 레이아웃
                     Row(
                         modifier = Modifier
@@ -195,19 +205,9 @@ fun CardMainScreen(navController: NavHostController) {
 
                         Spacer(modifier = Modifier.weight(1f))
 
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_plus),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(36.dp)
-                                .bounceClick {
-//                                    추가 버튼 눌렀을 때
-                                    navController.navigate(route = NAV_ROUTE.CARDCAMERA.routeName)
-                                }
 
-
-                        )
                     }
+
 
                     SearchTextField(
                         searchText = searchText,
@@ -215,6 +215,50 @@ fun CardMainScreen(navController: NavHostController) {
                         focusManager = focusManager,
                         db = db,
                         navController = navController
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+//                    Image(
+//                        painter = painterResource(id = R.drawable.ic_logo),
+//                        modifier = Modifier
+//                            .padding(horizontal = 10.dp)
+//                            .width(300.dp)
+//                            .height(166.dp)
+//                            .clip(shape=RoundedCornerShape(5.dp)),
+//                        contentDescription = null,
+//                    )
+                    Image(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(190.dp)
+                            .padding(20.dp, 10.dp)
+                            .clip(shape=RoundedCornerShape(5.dp)),
+                        contentScale = ContentScale.Crop,
+                        painter = rememberImagePainter(R.drawable.ic_plus_card),
+                        contentDescription = null
+                    )
+                    Image(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(190.dp)
+                            .padding(20.dp, 10.dp)
+                            .clip(shape=RoundedCornerShape(5.dp))
+                            .shadow(10.dp, shape = RoundedCornerShape(10.dp)),
+                        contentScale = ContentScale.Crop,
+                        painter = rememberImagePainter(R.drawable.ic_card2),
+                        contentDescription = null
+                    )
+                    Image(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(190.dp)
+                            .padding(20.dp, 10.dp)
+                            .clip(shape=RoundedCornerShape(5.dp))
+                            .shadow(20.dp, shape = RoundedCornerShape(6.dp)),
+                        contentScale = ContentScale.Crop,
+                        painter = rememberImagePainter(R.drawable.ic_card3),
+                        contentDescription = null
                     )
 
                     Spacer(modifier = Modifier.weight(1f))
@@ -230,24 +274,93 @@ fun CardMainScreen(navController: NavHostController) {
 //                    }
 //                    }
 
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_folder),
-                        contentDescription = null,
+                    Row(
                         modifier = Modifier
-                            .size(70.dp)
-                            .bounceClick {
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                            .padding(bottom = 0.dp)
+                            .padding(horizontal = 70.dp)
+                    ) {
+                        Column(
+                            modifier = Modifier,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(60.dp)
+                                    .clip(shape = RoundedCornerShape(10.dp))
+                                    .background(color = MDPointAlpha)
+                                    .bounceClick {
 //                                    추가 버튼 눌렀을 때
-//                                    navController.navigate(route = NAV_ROUTE.DISCOVERSEARCHING.routeName)
-                                focusManager.clearFocus()
-                                showModalSheet.value = !showModalSheet.value
-                                scope.launch {
-                                    bottomSheetState.show()
+//                                        navController.navigate(route = NAV_ROUTE.CARDCAMERA.routeName)
+                                        navController.navigate(route = NAV_ROUTE.CARDDETAIL.routeName)
+                                    },
+                                contentAlignment = Center
 
-                                }
+                            ) {
+
+                                Image(
+                                    painter = painterResource(id = R.drawable.ic_camera),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .size(24.dp)
+
+                                )
+
                             }
-                            .align(alignment = CenterHorizontally)
+                            Text(
+                                text = "카메라",
+                                color = MDPoint,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight(500),
+                                modifier = Modifier
+                                    .padding(5.dp)
+                            )
+                        }
+                        Spacer(modifier = Modifier.weight(1f))
 
-                    )
+                        Column(
+                            modifier = Modifier,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(60.dp)
+                                    .clip(shape = RoundedCornerShape(10.dp))
+                                    .background(color = MDPointAlpha)
+                                    .bounceClick {
+//                                    navController.navigate(route = NAV_ROUTE.DISCOVERSEARCHING.routeName)
+                                        focusManager.clearFocus()
+                                        showModalSheet.value = !showModalSheet.value
+                                        scope.launch {
+                                            bottomSheetState.show()
+
+                                        }
+                                    },
+                                contentAlignment = Center
+
+                            ) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.ic_folder),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .size(24.dp)
+
+
+                                )
+
+                            }
+                            Text(
+                                text = "폴더",
+                                color = MDPoint,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight(500),
+                                modifier = Modifier
+                                    .padding(5.dp)
+                            )
+                        }
+                    }
+
                 }
             }
 

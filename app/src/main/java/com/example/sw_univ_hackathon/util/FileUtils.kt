@@ -10,6 +10,7 @@ import java.io.FileOutputStream
 import java.io.OutputStream
 
 
+
 object FileUtil {
     // 임시 파일 생성
     fun createTempFile(context: Context, fileName: String): File {
@@ -57,7 +58,7 @@ object UriUtil {
         return "$name.$ext"
     }
 
-    fun bitmapToFile(bitmap: Bitmap, file: File): File {
+    fun bitmapToFile(bitmap: Bitmap, file: File): File{
         var out: OutputStream? = null
 
         Log.d("upload-result", "용량 : " + file.length())
@@ -73,3 +74,5 @@ object UriUtil {
         return file
     }
 }
+
+
