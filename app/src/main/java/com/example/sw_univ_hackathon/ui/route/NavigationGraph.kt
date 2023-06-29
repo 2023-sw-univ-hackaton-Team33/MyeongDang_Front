@@ -1,5 +1,6 @@
 package com.example.sw_univ_hackathon.ui.route
 
+import CardTakePictureScreen
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -32,7 +33,6 @@ fun NavigationGraph(
         composable(
             NAV_ROUTE.CARDMAIN.routeName
         ) {
-            CardCameraScreen(modifier = Modifier ,navController)
             CardMainScreen(navController)
         }
         composable(
@@ -43,14 +43,13 @@ fun NavigationGraph(
         composable(
             NAV_ROUTE.CARDCAMERA.routeName + "/{searchText}",
         ) { backStackEntry ->
-            val searchText = backStackEntry.arguments?.getString("searchText") ?: ""
-//            SearchResultScreen(navController, searchText)
+            CardTakePictureScreen(navController)
         }
         composable(
             NAV_ROUTE.CARDADD.routeName
         ) {
-            CardCameraScreen(modifier = Modifier ,navController)
-//            CardAddScreen(navController)
+//            CardCameraScreen(modifier = Modifier ,navController)
+            CardAddScreen(navController)
         }
     }
 }

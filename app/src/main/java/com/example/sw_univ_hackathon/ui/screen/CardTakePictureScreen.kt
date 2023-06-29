@@ -1,4 +1,4 @@
-package com.example.sw_univ_hackathon.ui.screen
+
 
 import android.Manifest
 import android.content.Context
@@ -16,48 +16,41 @@ import androidx.compose.material.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.navigation.NavHostController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
-import com.dheeraj.camera_example.ui.theme.Camera_exampleTheme
+import com.example.sw_univ_hackathon.R
+import com.example.sw_univ_hackathon.ui.route.NAV_ROUTE
+import com.example.sw_univ_hackathon.ui.theme.MDPoint
+import com.plzgpt.lenzhub.util.bounceClick
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            Camera_exampleTheme() {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    AppContent()
-                    //check permission
-                }
-            }
-        }
-    }
-}
 
-@OptIn(ExperimentalCoilApi::class)
 @Composable
-fun AppContent() {
+fun CardTakePictureScreen(navHostController: NavHostController) {
 
     val context = LocalContext.current
     val file = context.createImageFile()
     val uri = FileProvider.getUriForFile(
         Objects.requireNonNull(context),
-        BuildConfig.APPLICATION_ID + ".provider", file
+        "com.example.sw_univ_hackathon"+ ".provider", file
     )
 
     var capturedImageUri by remember {
@@ -79,34 +72,106 @@ fun AppContent() {
             Toast.makeText(context, "Permission Denied", Toast.LENGTH_SHORT).show()
         }
     }
-
-    Column(
-        Modifier
-            .fillMaxSize()
-            .padding(10.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Button(onClick = {
-            val permissionCheckResult =
-                ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
-            if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
-                cameraLauncher.launch(uri)
-            } else {
-                // Request a permission
-                permissionLauncher.launch(Manifest.permission.CAMERA)
-            }
-        }) {
-            Text(text = "Capture Image From Camera")
-        }
-    }
+//
+//    Column(
+//        Modifier
+//            .fillMaxSize()
+//            .padding(10.dp),
+//        horizontalAlignment = Alignment.CenterHorizontally
+//    ) {
+//        Button(onClick = {
+//            val permissionCheckResult =
+//                ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
+//            if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
+//                cameraLauncher.launch(uri)
+//            } else {
+//                // Request a permission
+//                permissionLauncher.launch(Manifest.permission.CAMERA)
+//            }
+//        }) {
+//            Text(text = "Capture Image From Camera")
+//        }
+//    }
 
     if (capturedImageUri.path?.isNotEmpty() == true) {
-        Image(
+        Column(
             modifier = Modifier
-                .padding(16.dp, 8.dp),
-            painter = rememberImagePainter(capturedImageUri),
-            contentDescription = null
-        )
+                .fillMaxSize()
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(top = 20.dp, bottom = 20.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.ic_chevron_left),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .bounceClick {
+
+                        }
+                )
+
+                Text(
+                    text = "명함 추가하기",
+                    color = Color.Black,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight(500),
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .padding(end = 15.dp)
+                        .weight(1f) // 추가: 남은 공간을   가득 채우도록 가중치 설정
+                        .wrapContentWidth(Alignment.CenterHorizontally) // 추가: 가운데 정렬
+                )
+            }
+            Image(
+                modifier = Modifier
+                    .padding(20.dp, 10.dp)
+                    .width(307.dp)
+                    .height(172.dp),
+                painter = rememberImagePainter(capturedImageUri),
+                contentDescription = null
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            Box(
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .fillMaxWidth()
+                    .bounceClick {
+                        navHostController.navigate(NAV_ROUTE.CARDADD.routeName)
+                    }
+                    .clip(RoundedCornerShape(30.dp))
+                    .background(color = MDPoint)
+            ) {
+                Text(
+                    text = "다음",
+                    color = Color.White,
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight(700),
+                    modifier = Modifier
+                        .padding(vertical = 14.dp)
+                        .align(Alignment.Center)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(27.dp))
+        }
+
+    }
+    else{
+        val permissionCheckResult =
+            ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
+        if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
+            cameraLauncher.launch(uri)
+        } else {
+            // Request a permission
+            permissionLauncher.launch(Manifest.permission.CAMERA)
+        }
     }
 
 
@@ -124,11 +189,3 @@ fun Context.createImageFile(): File {
     return image
 }
 
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    Camera_exampleTheme() {
-        AppContent()
-    }
-}

@@ -65,7 +65,7 @@ fun CardAddScreen(navController: NavHostController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .padding(top = 10.dp, bottom = 20.dp),
+                .padding(top = 20.dp, bottom = 20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
 
