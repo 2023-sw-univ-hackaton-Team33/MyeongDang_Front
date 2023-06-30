@@ -9,7 +9,7 @@ import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalView
 
-//화면에서 포커스 없애주는 함수
+// (자기참조)
 fun Modifier.addFocusCleaner(focusManager: FocusManager, doOnClear: () -> Unit = {}): Modifier {
     return this.pointerInput(Unit) {
         detectTapGestures(onTap = {
@@ -19,7 +19,7 @@ fun Modifier.addFocusCleaner(focusManager: FocusManager, doOnClear: () -> Unit =
     }
 }
 
-//키보드가 올라왔는지 확인하는 함수
+// (자기참조)
 enum class Keyboard { Opened, Closed }
 @Composable
 fun keyboardAsState(): State<Keyboard> {

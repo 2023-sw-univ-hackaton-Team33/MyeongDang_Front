@@ -37,7 +37,6 @@ import com.example.sw_univ_hackathon.ui.theme.MDPoint
 import com.example.sw_univ_hackathon.ui.theme.MDPointAlpha
 
 
-//탐색에 검색창
 @Composable
 fun EEditText(
     searchText : MutableState<String>,
@@ -47,7 +46,6 @@ fun EEditText(
         Box(
             modifier = Modifier.fillMaxWidth()
         ){
-            //검색어 입력하는 텍스트 필드
             TextField(
                 value = searchText.value,
                 onValueChange = { searchText.value = it },
@@ -70,21 +68,7 @@ fun EEditText(
                     isTextFieldSearchFocused.value = false
 
                     Log.d("keyboard-test", searchText.value)
-                    if(searchText.value != "") {
-                        //이미 전에 검색했던 거면 한번 지우고 다시 insert해줘서 맨 위로 올려줌
-//                    val checkData: BusinessCard? = db.businessCardDao().findRecentSearchBySearchText(searchText.value)
-//                    checkData?.let {
-//                        db.businessCardDao().delete(
-//                            it
-//                        )
-//                    }
-//
-//                    navController.navigate(route = NAV_ROUTE_SEARCH.DISCOVERSEARCHRESULT.routeName + "/" + searchText.value) {
-//                        popUpTo(NAV_ROUTE_SEARCH.DISCOVERSEARCHING.routeName)
-//                    }
 
-
-                    }
                 }),
                 keyboardOptions = KeyboardOptions.Default.copy(
                     imeAction = ImeAction.Search,

@@ -11,6 +11,7 @@ import java.io.OutputStream
 
 
 
+// (자기참조)
 object FileUtil {
     // 임시 파일 생성
     fun createTempFile(context: Context, fileName: String): File {
