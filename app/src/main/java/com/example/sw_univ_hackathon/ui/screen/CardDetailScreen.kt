@@ -1,5 +1,6 @@
 package com.example.sw_univ_hackathon.ui.screen
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -41,6 +42,7 @@ import com.example.sw_univ_hackathon.ui.data.CardDto
 import com.example.sw_univ_hackathon.ui.theme.MDGray
 import com.example.sw_univ_hackathon.ui.theme.MDPoint
 import com.example.sw_univ_hackathon.util.ModalBottomSheet
+import com.example.sw_univ_hackathon.util.ModalBottomSheetItem
 import com.example.sw_univ_hackathon.util.bounceClick
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -50,31 +52,71 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun CardDetailScreen(
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    cardKey: String
 ) {
+    Log.d("key-value", cardKey)
     val context = LocalContext.current.applicationContext
     val pagerState = rememberPagerState()
 
     val focusManager = LocalFocusManager.current
     val scope = rememberCoroutineScope()
-
+    lateinit var cardData :CardDto
     val showModalSheet = rememberSaveable { mutableStateOf(false) }
     val bottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
-
-    val cardData = CardDto(
-        BusinessCard.CARD1.userName,
-        BusinessCard.CARD1.phone,
-        BusinessCard.CARD1.email,
-        BusinessCard.CARD1.company,
-        BusinessCard.CARD1.image,
-    )
+    if(cardKey == "a"){
+        cardData = CardDto(
+            BusinessCard.CARD2.userName,
+            BusinessCard.CARD2.phone,
+            BusinessCard.CARD2.email,
+            BusinessCard.CARD2.company,
+            BusinessCard.CARD2.image,
+        )
+    }
+    else if(cardKey == "b"){
+        cardData = CardDto(
+            BusinessCard.CARD3.userName,
+            BusinessCard.CARD3.phone,
+            BusinessCard.CARD3.email,
+            BusinessCard.CARD3.company,
+            BusinessCard.CARD3.image,
+        )
+    }
+    else {
+        cardData = CardDto(
+            BusinessCard.CARD1.userName,
+            BusinessCard.CARD1.phone,
+            BusinessCard.CARD1.email,
+            BusinessCard.CARD1.company,
+            BusinessCard.CARD1.image,
+        )
+    }
 
     ModalBottomSheet(
         title = "",
         bottomSheetState = bottomSheetState,
         sheetScreen = {
-
+            ModalBottomSheetItem(text = "SW공동 헤커톤 멘토", trailing = true, modifier = Modifier.bounceClick {
+                scope.launch {
+                    bottomSheetState.hide()
+                }
+            })
+            ModalBottomSheetItem(text = "독서모임", trailing = true, modifier = Modifier.bounceClick {
+                scope.launch {
+                    bottomSheetState.hide()
+                }
+            })
+            ModalBottomSheetItem(text = "두산그룹", trailing = true, modifier = Modifier.bounceClick {
+                scope.launch {
+                    bottomSheetState.hide()
+                }
+            })
+            ModalBottomSheetItem(text = "거래처", trailing = true, modifier = Modifier.bounceClick {
+                scope.launch {
+                    bottomSheetState.hide()
+                }
+            })
         },
         uiScreen = {
             BackHandler(enabled = bottomSheetState.isVisible) {
@@ -103,6 +145,7 @@ fun CardDetailScreen(
                             .bounceClick {
 
                             }
+                            .padding(start=20.dp)
                     )
                     Text(
                         text = "상세보기",
@@ -122,7 +165,7 @@ fun CardDetailScreen(
                         .height(280.dp)
                         .padding(20.dp, 10.dp),
                     contentScale = ContentScale.Crop,
-                    painter = rememberImagePainter(R.drawable.ic_card3),
+                    painter = rememberImagePainter(cardData.image),
                     contentDescription = null
                 )
 
@@ -189,13 +232,13 @@ fun CardDetailScreen(
                         }
                     )
                 }
-
                 //포스트, 큐레이션 텝 레이아웃
                 HorizontalPager(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .wrapContentHeight()
+                        .height(350.dp)
                         .padding(horizontal = 18.dp),
+                    verticalAlignment = Alignment.Top,
                     count = 4,
                     state = pagerState
                 ) { page ->
@@ -203,8 +246,8 @@ fun CardDetailScreen(
                         //나중에 API로 받은 값(List)도 넣어줘야할듯
                         0 -> NormalInformationScreen(cardData)
                             1 -> RelatedInformationScreen(navHostController, cardData)
-//                            2 -> RelatedCompanyScreen(selectedCategory.value)
-//                            3 -> RelatedNewsScreen(selectedCategory.value)
+                            2 -> RelatedCompanyScreen(navHostController, cardData)
+                            3 -> RelatedNewsScreen(navHostController, cardData)
                     }
 
                 }
@@ -227,7 +270,7 @@ fun CardDetailScreen(
 
                 ) {
                     Text(
-                        text = "다음",
+                        text = "폴더 지정하기",
                         color = Color.White,
                         fontSize = 20.sp,
                         fontWeight = FontWeight(700),

@@ -38,6 +38,7 @@ import com.example.sw_univ_hackathon.ui.theme.MDPointAlpha
 
 
 //탐색에 검색창
+// <자기 참조>
 @Composable
 fun SearchTextField(
     searchText : MutableState<String>,

@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.sw_univ_hackathon"
-        minSdk 26
+        minSdk 31
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -69,6 +69,7 @@ dependencies {
     implementation 'androidx.compose.material3:material3'
     implementation 'com.google.firebase:firebase-storage-ktx:20.2.1'
     implementation 'com.google.firebase:firebase-firestore-ktx:24.6.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -119,8 +120,8 @@ dependencies {
 //    implementation('com.google.firebase.firebase-storage')
 //    implementation('com.google.firebase.firebase-database')
 
-    // 카메라 오픈소스 사용
-    implementation("io.github.ujizin:camposer:0.1.0")
+//    // 카메라 오픈소스 사용
+//    implementation("io.github.ujizin:camposer:0.1.0")
 
     // Permission
     implementation 'io.github.ParkSangGwon:tedpermission-normal:3.3.0'
@@ -128,6 +129,6 @@ dependencies {
     // 이미지 코일 라이브러리
     implementation("io.coil-kt:coil-compose:2.4.0")
 
-
+    // webView 라이브러리
     implementation "com.google.accompanist:accompanist-webview:0.24.13-rc"
 }

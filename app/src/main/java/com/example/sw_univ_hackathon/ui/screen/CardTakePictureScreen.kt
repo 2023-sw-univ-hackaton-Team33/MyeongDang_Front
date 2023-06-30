@@ -149,7 +149,6 @@ fun CardTakePictureScreen(navHostController: NavHostController) {
 
             Box(
                 modifier = Modifier
-                    .wrapContentHeight()
                     .fillMaxWidth()
                     .bounceClick {
                         if (capturedImageUri.path?.isNotEmpty() == true) {
@@ -215,7 +214,7 @@ fun CardTakePictureScreen(navHostController: NavHostController) {
                             navHostController.navigate(NAV_ROUTE.CARDADD.routeName)
                         }
                     }
-                    .clip(RoundedCornerShape(30.dp))
+                    .height(80.dp)
                     .background(color = MDPoint)
             ) {
                 Text(

@@ -4,7 +4,6 @@ data class RelatedChannelResponse(
     val data: ArrayList<RelatedChannelDto> ?= null
 
 )
-
 data class RelatedChannelDto (
     val id: Int,
     val title: String,

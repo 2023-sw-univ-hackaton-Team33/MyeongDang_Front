@@ -144,9 +144,8 @@ fun ModalBottomSheetItem(
     ) {
         Row(
             modifier = Modifier
-                .padding(vertical = 10.dp)
+                .padding(vertical = 20.dp)
         ) {
-            Spacer(modifier = Modifier.width(20.dp))
             Text(
                 text,
                 fontSize = 16.sp,

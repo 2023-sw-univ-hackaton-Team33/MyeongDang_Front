@@ -11,7 +11,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.sw_univ_hackathon.ui.screen.CardAddScreen
-import com.example.sw_univ_hackathon.ui.screen.CardCameraScreen
 import com.example.sw_univ_hackathon.ui.screen.CardDetailScreen
 import com.example.sw_univ_hackathon.ui.screen.CardMainScreen
 import com.example.sw_univ_hackathon.ui.screen.WebViewScreen
@@ -58,16 +57,13 @@ fun NavigationGraph(
             CardAddScreen(navController)
         }
         composable(
-            NAV_ROUTE.CARDDETAIL.routeName
-        ) {
-//            CardCameraScreen(modifier = Modifier ,navController)
-            CardDetailScreen(navController)
+            NAV_ROUTE.CARDDETAIL.routeName+"/{key}"
+        ) {backStackEntry ->
+            val key = backStackEntry.arguments?.getString("key") ?: "c"
+            CardDetailScreen(navController, cardKey = key)
         }
         composable(
-            NAV_ROUTE.WEBVIEW.routeName+"/{url}",
-            arguments = listOf(
-                navArgument("url") { type = NavType.StringType }
-            )
+            NAV_ROUTE.WEBVIEW.routeName+"/{url}"
         ) { backStackEntry ->
             val url = backStackEntry.arguments?.getString("url") ?: ""
             WebViewScreen(navController, url = url)

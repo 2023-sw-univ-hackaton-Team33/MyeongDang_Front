@@ -56,7 +56,6 @@ fun NormalInformationScreen(cardData: CardDto) {
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
             )
-
         }
 
         // 회색 홀드

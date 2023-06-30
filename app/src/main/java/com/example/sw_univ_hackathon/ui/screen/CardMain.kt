@@ -56,11 +56,13 @@ import androidx.room.Room
 import coil.compose.rememberImagePainter
 import com.example.sw_univ_hackathon.R
 import com.example.sw_univ_hackathon.db.BusinessCardDatabase
+import com.example.sw_univ_hackathon.ui.data.BusinessCard
 import com.example.sw_univ_hackathon.ui.route.NAV_ROUTE
 import com.example.sw_univ_hackathon.ui.theme.MDBlack
 import com.example.sw_univ_hackathon.ui.theme.MDPoint
 import com.example.sw_univ_hackathon.ui.theme.MDPointAlpha
 import com.example.sw_univ_hackathon.util.ModalBottomSheet
+import com.example.sw_univ_hackathon.util.ModalBottomSheetItem
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import com.example.sw_univ_hackathon.util.SearchTextField
@@ -130,36 +132,26 @@ fun CardMainScreen(navController: NavHostController) {
         title = "",
         bottomSheetState = bottomSheetState,
         sheetScreen = {
-
-//            ModalBottomSheetItem(text = "동물", icon = R.drawable.ic_animal, trailing = true, modifier = Modifier.bounceClick {
-//                selectedCategory.value = Category.ANIMAL
-//
-//                scope.launch {
-//                    bottomSheetState.hide()
-//                }
-//            })
-//            ModalBottomSheetItem(text = "인물", icon = R.drawable.ic_person, trailing = true, modifier = Modifier.bounceClick {
-//
-//                selectedCategory.value = Category.PERSON
-//
-//                scope.launch {
-//                    bottomSheetState.hide()
-//                }
-//            })
-//            ModalBottomSheetItem(text = "풍경", icon = R.drawable.ic_sight, trailing = true, modifier = Modifier.bounceClick {
-//                selectedCategory.value = Category.SIGHT
-//
-//                scope.launch {
-//                    bottomSheetState.hide()
-//                }
-//            })
-//            ModalBottomSheetItem(text = "음식", icon = R.drawable.ic_food, trailing = true, modifier = Modifier.bounceClick {
-//                selectedCategory.value = Category.FOOD
-//
-//                scope.launch {
-//                    bottomSheetState.hide()
-//                }
-//            })
+            ModalBottomSheetItem(text = "SW공동 헤커톤 멘토", trailing = true, modifier = Modifier.bounceClick {
+                scope.launch {
+                    bottomSheetState.hide()
+                }
+            })
+            ModalBottomSheetItem(text = "독서모임", trailing = true, modifier = Modifier.bounceClick {
+                scope.launch {
+                    bottomSheetState.hide()
+                }
+            })
+            ModalBottomSheetItem(text = "두산그룹", trailing = true, modifier = Modifier.bounceClick {
+                scope.launch {
+                    bottomSheetState.hide()
+                }
+            })
+            ModalBottomSheetItem(text = "거래처", trailing = true, modifier = Modifier.bounceClick {
+                scope.launch {
+                    bottomSheetState.hide()
+                }
+            })
         },
         uiScreen = {
             BackHandler(enabled = bottomSheetState.isVisible) {
@@ -233,7 +225,10 @@ fun CardMainScreen(navController: NavHostController) {
                             .fillMaxWidth()
                             .height(190.dp)
                             .padding(20.dp, 10.dp)
-                            .clip(shape=RoundedCornerShape(5.dp)),
+                            .clip(shape=RoundedCornerShape(5.dp))
+                            .bounceClick {
+                                navController.navigate(route = NAV_ROUTE.CARDCAMERA.routeName)
+                            },
                         contentScale = ContentScale.Crop,
                         painter = rememberImagePainter(R.drawable.ic_plus_card),
                         contentDescription = null
@@ -244,9 +239,13 @@ fun CardMainScreen(navController: NavHostController) {
                             .height(190.dp)
                             .padding(20.dp, 10.dp)
                             .clip(shape=RoundedCornerShape(5.dp))
-                            .shadow(10.dp, shape = RoundedCornerShape(10.dp)),
+                            .shadow(10.dp, shape = RoundedCornerShape(10.dp))
+                            .bounceClick {
+                                navController.navigate(NAV_ROUTE.CARDDETAIL.routeName+"/b")
+
+                            },
                         contentScale = ContentScale.Crop,
-                        painter = rememberImagePainter(R.drawable.ic_card2),
+                        painter = rememberImagePainter(BusinessCard.CARD3.image),
                         contentDescription = null
                     )
                     Image(
@@ -255,9 +254,12 @@ fun CardMainScreen(navController: NavHostController) {
                             .height(190.dp)
                             .padding(20.dp, 10.dp)
                             .clip(shape=RoundedCornerShape(5.dp))
-                            .shadow(20.dp, shape = RoundedCornerShape(6.dp)),
+                            .shadow(20.dp, shape = RoundedCornerShape(6.dp))
+                            .bounceClick {
+                                navController.navigate(NAV_ROUTE.CARDDETAIL.routeName+"/a")
+                            },
                         contentScale = ContentScale.Crop,
-                        painter = rememberImagePainter(R.drawable.ic_card3),
+                        painter = rememberImagePainter(BusinessCard.CARD2.image),
                         contentDescription = null
                     )
 
@@ -292,8 +294,8 @@ fun CardMainScreen(navController: NavHostController) {
                                     .background(color = MDPointAlpha)
                                     .bounceClick {
 //                                    추가 버튼 눌렀을 때
-//                                        navController.navigate(route = NAV_ROUTE.CARDCAMERA.routeName)
-                                        navController.navigate(route = NAV_ROUTE.CARDDETAIL.routeName)
+                                        navController.navigate(route = NAV_ROUTE.CARDCAMERA.routeName)
+//                                        navController.navigate(route = NAV_ROUTE.CARDDETAIL.routeName)
                                     },
                                 contentAlignment = Center
 
